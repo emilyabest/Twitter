@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/emilyabest/Desktop/fbu_ios_twitter_objc-starter-project/twitter/User.h">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/emilyabest/Desktop/fbu_ios_twitter_objc-starter-project/twitter/User.m">
+   </FileRef>
+   <FileRef
       location = "group:twitter.xcodeproj">
    </FileRef>
    <FileRef
