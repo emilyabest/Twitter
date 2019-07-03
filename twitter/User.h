@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *screenName;
 
-// Initializer
+// Initializer method
 - (instancetype)initWithDictionary:(NSDictionary*) dictionary;
 
 @end

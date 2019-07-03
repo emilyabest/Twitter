@@ -59,7 +59,7 @@
 }
 
 /**
- Factory method that returns Tweets when initialized with an array of Tweet Dictionaries.
+ Factory method that returns an array of Tweets when initialized with an array of Tweet Dictionaries.
  Useful when program gets back a response with an array of Tweet dictionaries.
  */
 + (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries{

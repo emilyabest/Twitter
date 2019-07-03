@@ -22,9 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL retweeted; // Configure retweet button
 @property (strong, nonatomic) User *user; // Contains name, screenname, etc. of tweet author
 @property (strong, nonatomic) NSString *createdAtString; // Display date
+@property (strong, nonatomic) User *retweetedByUser; // User who retweeted if tweet is retweet; for re-tweets
 
-// For Retweets
-@property (strong, nonatomic) User *retweetedByUser; // User who retweeted if tweet is retweet
+// Method
++ (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries;
 
 @end
 
