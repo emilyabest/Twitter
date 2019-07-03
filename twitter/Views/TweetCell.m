@@ -9,6 +9,7 @@
 #import "TweetCell.h"
 #import "TimelineViewController.h"
 
+// [2] Define a custom table view cell and set it’s reuse identifier
 @interface TweetCell ()
 
 @end
