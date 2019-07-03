@@ -34,6 +34,10 @@
         if (tweets) {
             self.tweets = tweets;
             
+            // Set cell height
+//            self.tableView.rowHeight = UITableViewAutomaticDimension;
+            self.tableView.rowHeight = 200;
+            
             // Reload tableView
             [self.tableView reloadData];
         } else {
@@ -62,19 +66,37 @@
     // Access next cell
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     
-    // Fill name, screen name, created at date, and text
     Tweet *tweet = self.tweets[indexPath.row];
     
+    // Fill name, screen name, created at date, text, retweet count and favorite count
     cell.actualName.text = tweet.user.name;
     cell.screenName.text = tweet.user.screenName;
     cell.createdAtDate.text = tweet.createdAtString;
     cell.tweetText.text = tweet.text;
+    cell.retweetCount.text = [NSString stringWithFormat:@"%d", tweet.retweetCount];
+    cell.favoritedCount.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
     
     // Fill profile image
     NSString *profileURLString = tweet.user.profileURL;
     NSURL *profileURL = [NSURL URLWithString:profileURLString];
     cell.profileImage.image = nil;
     [cell.profileImage setImageWithURL:profileURL];
+    
+    // NOTE: potentially just need if branches. We'll see when we get to that step
+//    // Fill retweet and favorite image buttons
+//    if (tweet.retweeted) {
+//        // Set image to green retweet
+//        init?([named name: @"retweet-icon", in bundle: nil, compatibleWith traitCollection: nil ]): cell.retweetImage;
+//    }
+//    else {
+//        // set image to gray retweet
+//    }
+//    if (tweet.favorited) {
+//        // set image to green favorited
+//    }
+//    else {
+//        // set image to gray favorited
+//    }
     
     return cell;
 }
