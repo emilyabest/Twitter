@@ -83,4 +83,22 @@ static NSString * const consumerSecret = @"kxxGX0sQwWgmOkgGyaARLDGmtKi7S9OA48rOV
 //   }];
 }
 
+/**
+ Post method to send out tweets
+ */
+- (void)postStatusWithText:(NSString *) text completion:(void (^)(Tweet *, NSError *))completion{
+    NSString *urlString = @"1.1/statuses/update.json";
+    NSDictionary *parameters = @{@"status": text};
+    
+    // Complete making tweet from text (user's input)
+    [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable tweetDictionary) {
+        Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];
+        completion(tweet, nil);
+    }
+       // There was a problem
+       failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+}
+
 @end

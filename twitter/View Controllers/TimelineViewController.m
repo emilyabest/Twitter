@@ -12,10 +12,11 @@
 #import "UIImageView+AFNetworking.h"
 #import "Tweet.h"
 #import "User.h"
+#import "ComposeViewController.h"
 
-@interface TimelineViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface TimelineViewController () <UITableViewDelegate, UITableViewDataSource, ComposeViewControllerDelegate>
 
-@property (strong, nonatomic) NSArray *tweets;
+@property (strong, nonatomic) NSMutableArray *tweets;
 
 // [1] View controller has a tableView as a subview
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -56,7 +57,9 @@
     [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
         if (tweets) {
             // [6] View controller stores that data passed into the completion handler
-            self.tweets = tweets;
+//            self.tweets = tweets;
+            self.tweets = [NSMutableArray arrayWithArray: tweets];
+
             
             // Reload tableView with new data
             // [7] Reload the table view
@@ -75,16 +78,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+/**
+ Set the TimelineViewController as the delegate of the ComposeViewController
+ */
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    UINavigationController *navigationController = [segue destinationViewController];
+    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+    composeController.delegate = self;
+    
 }
-*/
-
 
 // [9] numberOfRows returns the number of items returned from the API
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -129,6 +134,14 @@
 //    }
     
     return cell;
+}
+
+/**
+ The user tweeted something, add their tweet to the list of tweets
+ */
+- (void)didTweet:(nonnull Tweet *)tweet {
+    [self.tweets addObject:tweet];
+    [self.tableView reloadData];
 }
 
 @end

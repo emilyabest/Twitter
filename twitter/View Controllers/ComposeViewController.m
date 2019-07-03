@@ -7,11 +7,12 @@
 //
 
 #import "ComposeViewController.h"
+#import "APIManager.h"
 
 @interface ComposeViewController ()
-@property (weak, nonatomic) IBOutlet UITextView *composeSpace;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
+@property (weak, nonatomic) IBOutlet UITextView *composeText;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *tweetButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
 
 @end
 
@@ -20,9 +21,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self.closeButton action[self dismissViewControllerAnimated:true completion:nil]];
 }
+
+/**
+ Close screen when close button is tapped.
+ */
+- (IBAction)closeButtonTapped:(UIBarButtonItem *) sender {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
+/**
+ Tweet the composed tweet when the user taps tweet.
+ */
+- (IBAction)tweetButtonTapped:(UIBarButtonItem *) sender {
+    [[APIManager shared] postStatusWithText:self.composeText.text completion:^(Tweet *tweet, NSError *error) {
+        // If text from compose field was successful, the tweet was made
+        if (tweet) {
+            [self.delegate didTweet:tweet];
+            NSLog(@"Compose tweet success!");
+        } else {
+            NSLog(@"Error composing tweet: %@", error.localizedDescription);
+        }
+        
+        // Close the compose screen
+        [self dismissViewControllerAnimated:true completion:nil];
+    }];
+}
+
 
 /*
 #pragma mark - Navigation
