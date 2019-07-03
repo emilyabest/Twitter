@@ -33,11 +33,6 @@
     [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
         if (tweets) {
             self.tweets = tweets;
-//            NSLog(@"😎😎😎 Successfully loaded home timeline");
-//            for (NSDictionary *dictionary in tweets) {
-//                NSString *text = dictionary[@"text"];
-//                NSLog(@"%@", text);
-//            }
             
             // Reload tableView
             [self.tableView reloadData];
@@ -75,12 +70,11 @@
     cell.createdAtDate.text = tweet.createdAtString;
     cell.tweetText.text = tweet.text;
     
-//    // Fill profile image
-//    NSString *profileURLString = tweet[@"profile_image_url_https"];
-//    tweet.
-//    NSURL *profileURL = [NSURL URLWithString:profileURLString];
-//    cell.profileImage.image = nil;
-//    [cell.profileImage setImageWithURL:profileURL];
+    // Fill profile image
+    NSString *profileURLString = tweet.user.profileURL;
+    NSURL *profileURL = [NSURL URLWithString:profileURLString];
+    cell.profileImage.image = nil;
+    [cell.profileImage setImageWithURL:profileURL];
     
     return cell;
 }
