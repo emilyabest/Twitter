@@ -26,14 +26,14 @@
 /**
  Close screen when close button is tapped.
  */
-- (IBAction)closeButtonTapped:(UIBarButtonItem *) sender {
+- (IBAction)didTapClose:(UIBarButtonItem *) sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
 
 /**
  Tweet the composed tweet when the user taps tweet.
  */
-- (IBAction)tweetButtonTapped:(UIBarButtonItem *) sender {
+- (IBAction)didTapTweet:(UIBarButtonItem *) sender {
     [[APIManager shared] postStatusWithText:self.composeText.text completion:^(Tweet *tweet, NSError *error) {
         // If text from compose field was successful, the tweet was made
         if (tweet) {

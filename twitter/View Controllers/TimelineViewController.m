@@ -59,7 +59,6 @@
             // [6] View controller stores that data passed into the completion handler
 //            self.tweets = tweets;
             self.tweets = [NSMutableArray arrayWithArray: tweets];
-
             
             // Reload tableView with new data
             // [7] Reload the table view
@@ -104,6 +103,7 @@
     Tweet *tweet = self.tweets[indexPath.row];
     
     // Fill name, screen name, created at date, text, retweet count and favorite count
+    cell.tweet = tweet;
     cell.actualName.text = tweet.user.name;
     cell.screenName.text = tweet.user.screenName;
     cell.createdAtDate.text = tweet.createdAtString;
@@ -117,22 +117,6 @@
     cell.profileImage.image = nil;
     [cell.profileImage setImageWithURL:profileURL];
     
-    // NOTE: potentially just need if branches. We'll see when we get to that step
-//    // Fill retweet and favorite image buttons
-//    if (tweet.retweeted) {
-//        // Set image to green retweet
-//        init?([named name: @"retweet-icon", in bundle: nil, compatibleWith traitCollection: nil ]): cell.retweetImage;
-//    }
-//    else {
-//        // set image to gray retweet
-//    }
-//    if (tweet.favorited) {
-//        // set image to green favorited
-//    }
-//    else {
-//        // set image to gray favorited
-//    }
-    
     return cell;
 }
 
@@ -140,7 +124,7 @@
  The user tweeted something, add their tweet to the list of tweets
  */
 - (void)didTweet:(nonnull Tweet *)tweet {
-    [self.tweets addObject:tweet];
+    [self.tweets insertObject:tweet atIndex:0];
     [self.tableView reloadData];
 }
 
