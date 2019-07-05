@@ -103,20 +103,24 @@
     // Fill name, screen name, created at date, text, retweet count and favorite count
     cell.tweet = tweet;
     cell.actualName.text = tweet.user.name;
-    cell.screenName.text = tweet.user.screenName;
+    cell.screenName.text = [NSString stringWithFormat:@"%@%@", @"@", tweet.user.screenName];
     cell.createdAtDate.text = tweet.createdAtString;
     cell.tweetText.text = tweet.text;
     cell.retweetCount.text = [NSString stringWithFormat:@"%d", tweet.retweetCount];
     cell.favoritedCount.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
     
-    // Fill retweet and favorite icons
+    // Fill retweet and favorite icons; also update count font colors
     if (cell.tweet.favorited) {
         [cell.favoritedButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
+        cell.favoritedCount.textColor = [UIColor colorWithRed:210/255.0 green:57/255.0 blue:78/255.0 alpha:1];
+;
     } else {
         [cell.favoritedButton setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
     }
     if (cell.tweet.retweeted) {
         [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+        cell.retweetCount.textColor = [UIColor colorWithRed:94/255.0 green:205/255.0 blue:138/255.0 alpha:1];;
+;
     } else {
         [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
     }

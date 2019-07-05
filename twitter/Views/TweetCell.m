@@ -39,6 +39,9 @@
         self.favoritedCount.text = [@(++self.tweet.favoriteCount) stringValue];
         [sender setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
         
+        // Update favorite font color
+        self.favoritedCount.textColor = [UIColor colorWithRed:210/255.0 green:57/255.0 blue:78/255.0 alpha:1];
+        
         // Send a POST request to the POST favorite/create endpoint
         [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if (tweet) {
@@ -75,6 +78,9 @@
         self.tweet.retweeted = YES;
         self.retweetCount.text = [@(++self.tweet.retweetCount) stringValue];
         [sender setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+        
+        // Update retweet color with retweet green
+        self.retweetCount.textColor = [UIColor colorWithRed:94/255.0 green:205/255.0 blue:138/255.0 alpha:1];;
         
         // Send a POST request to the POST retweet endpoint
         [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
