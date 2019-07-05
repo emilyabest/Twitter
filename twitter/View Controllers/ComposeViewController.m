@@ -31,7 +31,7 @@
 }
 
 /**
- Tweet the composed tweet when the user taps tweet.
+ Tweet the composed tweet when the user taps tweet. // TODO: composing a tweet sends error
  */
 - (IBAction)didTapTweet:(UIBarButtonItem *) sender {
     [[APIManager shared] postStatusWithText:self.composeText.text completion:^(Tweet *tweet, NSError *error) {

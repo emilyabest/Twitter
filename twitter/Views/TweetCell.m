@@ -32,42 +32,74 @@
  User tapped the favorite button
  */
 - (IBAction)didTapFavorite:(id)sender {
-    
-    // If tweet is currently favorited
-    if(self.tweet.favorited) {
-        // Update the favorite count and symbol to favorited
-        self.tweet.favorited = NO;
-        self.favoritedCount.text = [@(--self.tweet.favoriteCount) stringValue];
-        
-        [sender setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
-    }
-    // Else, tweet is currently unfavorited
-    else {
-        // Update the favorite count and symbol to favorited
+    // If user tapped to favorite the tweet
+    if (!self.tweet.favorited){
+        // Update to favorited; also update the favorite count and favorited symbol to favorited
         self.tweet.favorited = YES;
         self.favoritedCount.text = [@(++self.tweet.favoriteCount) stringValue];
-        
         [sender setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
-
+        
+        // Send a POST request to the POST favorite/create endpoint
+        [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if (tweet) {
+                NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
+            } else {
+                NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
+            }
+        }];
+    } // Else, user tapped to unfavorite the tweet
+    else {
+        // Update to unfavorited; also update the favorite count and favorited symbol to unfavorited
+        self.tweet.favorited = NO;
+        self.favoritedCount.text = [@(--self.tweet.favoriteCount) stringValue];
+        [sender setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
+        
+        // Send a POST request to the POST unfavorite/destroy endpoint
+        [[APIManager shared] unFavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if (tweet) {
+                NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
+            } else {
+                NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
+            }
+        }];
     }
-    
-    
-    // Update cell UI
-//    [self refreshData];
-
-    // Send a POST request to the POST favorites/create endpoint
-    [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-        if (tweet) {
-            NSLog(@"Successfully favorited the followint Tweet: %@", tweet.text);
-        } else {
-            NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
-        }
-    }];
 }
 
-- (void)refreshData {
-    self.favoritedCount.text = [@(self.tweet.favoriteCount) stringValue];
-//    self.favoritedButton.currentImage
+/**
+ User tapped the retweet button
+ */
+- (IBAction)didTapRetweet:(id)sender {
+    // If user tapped to retweet the tweet
+    if (!self.tweet.retweeted) {
+        // Update to retweeted; also update retweet count and retweet symbol to retweeted
+        self.tweet.retweeted = YES;
+        self.retweetCount.text = [@(++self.tweet.retweetCount) stringValue];
+        [sender setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+        
+        // Send a POST request to the POST retweet endpoint
+        [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if (tweet) {
+                NSLog(@"Successfully retweeted the following Tweet: %@", tweet.text);
+            } else {
+                NSLog(@"Error retweeting tweet: %@", error.localizedDescription);
+            }
+        }];
+    } // Else, user tapped to unretweet the tweet
+    else {
+        // Update to unretweeted; also update retweet count and retweet symbol to unretweeted
+        self.tweet.retweeted = NO;
+        self.retweetCount.text = [@(--self.tweet.retweetCount) stringValue];
+        [sender setImage:[UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+        
+        // Send a POST request to the POST unretweet endpoint
+        [[APIManager shared] unRetweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if (tweet) {
+                NSLog(@"Successfully unretweeted the following Tweet: %@", tweet.text);
+            } else {
+                NSLog(@"Error unretweeting tweet: %@", error.localizedDescription);
+            }
+        }];
+    }
 }
 
 @end

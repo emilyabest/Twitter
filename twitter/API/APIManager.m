@@ -111,27 +111,53 @@ static NSString * const consumerSecret = @"kxxGX0sQwWgmOkgGyaARLDGmtKi7S9OA48rOV
     [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable tweetDictionary) {
         Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];
         completion(tweet, nil);
-        NSLog(@"Made it here");
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, error);
-        NSLog(@"Made it to failure");
     }];
 }
 
 /**
- Send a network request to the POST favorites/create endpoint passing in the ID of the tweet to be favorited. Takes in the tweet to be favorited and then uses its id property to create the parameters dictionary
+ Send a network request to the POST unfavorites/destroy endpoint passing in the ID of the tweet to be unfavorited. Takes in the tweet to be unfavorited and then uses its id property to create the parameters dictionary
  */
-- (void)favorite:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
-    NSString *urlString = @"1.1/favorites/create.json";
+- (void)unFavorite:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
+    NSString *urlString = @"1.1/favorites/destroy.json";
     NSDictionary *parameters = @{@"id": tweet.idStr};
     
     [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable tweetDictionary) {
         Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];
         completion(tweet, nil);
-        NSLog(@"Made it here");
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, error);
-        NSLog(@"Made it to failure");
+    }];
+}
+
+/**
+ Send a network request to the POST retweet endpoint passing in the ID of the tweet to be retweeted. Takes in the tweet to be retweeted and then uses its id property to create the parameters dictionary
+ */
+- (void)retweet:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
+    NSString *urlString = @"1.1/statuses/retweet.json";
+    NSDictionary *parameters = @{@"id": tweet.idStr};
+    
+    [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable tweetDictionary) {
+        Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];
+        completion(tweet, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+}
+
+/**
+ Send a network request to the POST unretweet endpoint passing in the ID of the tweet to be unretweeted. Takes in the tweet to be unretweeted and then uses its id property to create the parameters dictionary
+ */
+- (void)unRetweet:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
+    NSString *urlString = @"1.1/statuses/unretweet.json";
+    NSDictionary *parameters = @{@"id": tweet.idStr};
+    
+    [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable tweetDictionary) {
+        Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];
+        completion(tweet, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
     }];
 }
 

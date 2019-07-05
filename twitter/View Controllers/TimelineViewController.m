@@ -111,6 +111,18 @@
     cell.retweetCount.text = [NSString stringWithFormat:@"%d", tweet.retweetCount];
     cell.favoritedCount.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
     
+    // Fill retweet and favorite icons
+    if (cell.tweet.favorited) {
+        [cell.favoritedButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
+    } else {
+        [cell.favoritedButton setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
+    }
+    if (cell.tweet.retweeted) {
+        [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+    } else {
+        [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+    }
+    
     // Fill profile image
     NSString *profileURLString = tweet.user.profileURL;
     NSURL *profileURL = [NSURL URLWithString:profileURLString];

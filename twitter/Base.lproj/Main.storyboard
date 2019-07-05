@@ -130,6 +130,9 @@
                                                     <rect key="frame" x="115" y="135" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" image="retweet-icon"/>
+                                                    <connections>
+                                                        <action selector="didTapRetweet:" destination="VVv-aB-Aq0" eventType="touchUpInside" id="8vk-Vi-kji"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tSN-OH-7Q9">
                                                     <rect key="frame" x="237" y="133" width="30" height="30"/>
