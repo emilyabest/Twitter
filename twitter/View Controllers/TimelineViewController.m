@@ -39,10 +39,6 @@
     // Fill the tweets initially
     [self fetchTweets];
     
-    // Set cell height
-//    self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.rowHeight = 200;
-    
     // Refresh the tweets when the user pulls down
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchTweets) forControlEvents:UIControlEventValueChanged];
