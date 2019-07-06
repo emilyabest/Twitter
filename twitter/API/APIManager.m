@@ -19,6 +19,9 @@ static NSString * const consumerSecret = @"kxxGX0sQwWgmOkgGyaARLDGmtKi7S9OA48rOV
 
 @implementation APIManager
 
+/**
+ Instance of the APIManager
+ */
 + (instancetype)shared {
     static APIManager *sharedManager = nil;
     static dispatch_once_t onceToken;
@@ -28,8 +31,10 @@ static NSString * const consumerSecret = @"kxxGX0sQwWgmOkgGyaARLDGmtKi7S9OA48rOV
     return sharedManager;
 }
 
+/**
+ Initialize the APIManager
+ */
 - (instancetype)init {
-    
     NSURL *baseURL = [NSURL URLWithString:baseURLString];
     NSString *key = consumerKey;
     NSString *secret = consumerSecret;

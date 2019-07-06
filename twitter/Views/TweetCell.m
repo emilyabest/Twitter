@@ -17,15 +17,18 @@
 
 @implementation TweetCell
 
+/**
+ Initializes the cell? Boiler plate code.
+ */
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
 }
 
+/**
+ Sets the selected cell as selected? Boiler plate code.
+ */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 /**
@@ -34,12 +37,10 @@
 - (IBAction)didTapFavorite:(id)sender {
     // If user tapped to favorite the tweet
     if (!self.tweet.favorited){
-        // Update to favorited; also update the favorite count and favorited symbol to favorited
+        // Update to favorited; also update the favorite count and favorited symbol to favorited; also update favorite font color
         self.tweet.favorited = YES;
         self.favoritedCount.text = [@(++self.tweet.favoriteCount) stringValue];
         [sender setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
-        
-        // Update favorite font color
         self.favoritedCount.textColor = [UIColor colorWithRed:210/255.0 green:57/255.0 blue:78/255.0 alpha:1];
         
         // Send a POST request to the POST favorite/create endpoint
@@ -75,12 +76,10 @@
 - (IBAction)didTapRetweet:(id)sender {
     // If user tapped to retweet the tweet
     if (!self.tweet.retweeted) {
-        // Update to retweeted; also update retweet count and retweet symbol to retweeted
+        // Update to retweeted; also update retweet count and retweet symbol to retweeted; also update retweet font color
         self.tweet.retweeted = YES;
         self.retweetCount.text = [@(++self.tweet.retweetCount) stringValue];
         [sender setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
-        
-        // Update retweet color with retweet green
         self.retweetCount.textColor = [UIColor colorWithRed:94/255.0 green:205/255.0 blue:138/255.0 alpha:1];;
         
         // Send a POST request to the POST retweet endpoint

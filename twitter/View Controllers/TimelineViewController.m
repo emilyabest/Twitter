@@ -2,7 +2,7 @@
 //  TimelineViewController.m
 //  twitter
 //
-//  Created by emersonmalca on 5/28/18.
+//  Created by emersonmalca on 5/28/18. Edited by Emily Best.
 //  Copyright © 2018 Emerson Malca. All rights reserved.
 //
 
@@ -47,7 +47,7 @@
 }
 
 /**
- Gets a list of tweets.Makes a network request to get updated data. Updates the tableView with the new data. Hides the RefreshControl.
+ Gets a list of tweets. Makes a network request to get updated data. Updates the tableView with the new data. Hides the RefreshControl.
  */
 - (void)fetchTweets {
     // Get timeline
@@ -56,7 +56,6 @@
     [[APIManager shared] getHomeTimelineWithParam: nil WithCompletion:^(NSArray *tweets, NSError *error) {
         if (tweets) {
             // [6] View controller stores that data passed into the completion handler
-//            self.tweets = tweets;
             self.tweets = [NSMutableArray arrayWithArray: tweets];
             
             // Reload tableView with new data
@@ -114,7 +113,6 @@
     if (cell.tweet.favorited) {
         [cell.favoritedButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
         cell.favoritedCount.textColor = [UIColor colorWithRed:210/255.0 green:57/255.0 blue:78/255.0 alpha:1];
-;
     } else {
         [cell.favoritedButton setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
         cell.favoritedCount.textColor = [UIColor colorWithRed:172/255.0 green:184/255.0 blue:194/255.0 alpha:1];
@@ -122,7 +120,6 @@
     if (cell.tweet.retweeted) {
         [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
         cell.retweetCount.textColor = [UIColor colorWithRed:94/255.0 green:205/255.0 blue:138/255.0 alpha:1];;
-;
     } else {
         [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
         cell.retweetCount.textColor = [UIColor colorWithRed:172/255.0 green:184/255.0 blue:194/255.0 alpha:1];
@@ -163,8 +160,6 @@
  */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (!self.isMoreDataLoading) {
-        // Reset the flag
-//        self.isMoreDataLoading = YES;
         
         // Calculate the position of one  screen length before the bottom of the results
         int scrollViewContentHeight = self.tableView.contentSize.height;
@@ -173,6 +168,11 @@
         // When the user has scrolled past the threshold, start requesting
         if(scrollView.contentOffset.y > scrollOffsetThreshold && self.tableView.isDragging) {
             self.isMoreDataLoading = YES;
+            
+            // Start activity indicator
+            [self.refreshControl addTarget:self action:@selector(loadMoreData) forControlEvents:UIControlEventValueChanged];
+            [self.tableView insertSubview:self.refreshControl atIndex:0];
+            
             [self loadMoreData];
         }
     }
@@ -198,15 +198,16 @@ Helper method for scrollViewDidScroll. Gets more data to add cells to the bottom
     NSDictionary *parameter = @{@"max_id": maxID};
     // Get timeline
     [[APIManager shared] getHomeTimelineWithParam: (NSDictionary *) parameter WithCompletion:^(NSArray *tweets, NSError *error) {
-        if (error != nil) {
-        }
-        else{
+        if (tweets) {
             self.isMoreDataLoading = NO;
             [self.tweets addObjectsFromArray:tweets];
             [self.tableView reloadData];
         }
+        else {
+            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
+        }
         // Tell the refreshControl to stop spinning
-//        [self.refreshControl endRefreshing];
+        [self.refreshControl endRefreshing];
     }];
 }
 

@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *composeText;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *tweetButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
+@property (weak, nonatomic) IBOutlet UILabel *charCountdown;
 
 @end
 
@@ -32,8 +33,19 @@
     // Construct what the new text would be if we allowed the user's latest edit
     NSString *newTweet = [self.composeText.text stringByReplacingCharactersInRange:range withString:text];
     
+    // Convert String countdown to number
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    f.numberStyle = NSNumberFormatterDecimalStyle;
+    NSNumber *numChars = [f numberFromString:self.charCountdown.text];
+    
+    // Update numeric countdown
+    long strToLong = [numChars longValue];
+    long decNumChars = 280 - newTweet.length;
+    NSNumber *currNumChars = @(decNumChars);
+    self.charCountdown.text = [currNumChars stringValue];
+    
     // The new text should be allowed? True/False
-    return newTweet.length < charLimit;
+    return newTweet.length <= charLimit;
 }
 
 /**
@@ -60,16 +72,5 @@
         [self dismissViewControllerAnimated:true completion:nil];
     }];
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
