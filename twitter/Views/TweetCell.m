@@ -56,6 +56,7 @@
         self.tweet.favorited = NO;
         self.favoritedCount.text = [@(--self.tweet.favoriteCount) stringValue];
         [sender setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
+        self.favoritedCount.textColor = [UIColor colorWithRed:172/255.0 green:184/255.0 blue:194/255.0 alpha:1];
         
         // Send a POST request to the POST unfavorite/destroy endpoint
         [[APIManager shared] unFavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
@@ -96,6 +97,7 @@
         self.tweet.retweeted = NO;
         self.retweetCount.text = [@(--self.tweet.retweetCount) stringValue];
         [sender setImage:[UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+        self.retweetCount.textColor = [UIColor colorWithRed:172/255.0 green:184/255.0 blue:194/255.0 alpha:1];
         
         // Send a POST request to the POST unretweet endpoint
         [[APIManager shared] unRetweet:self.tweet completion:^(Tweet *tweet, NSError *error) {

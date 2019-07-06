@@ -20,7 +20,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    // Only allow 280 characters in tweets
+    self.composeText.delegate = self;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    // Set the max character limit
+    int charLimit = 280;
+
+    // Construct what the new text would be if we allowed the user's latest edit
+    NSString *newTweet = [self.composeText.text stringByReplacingCharactersInRange:range withString:text];
+    
+    // The new text should be allowed? True/False
+    return newTweet.length < charLimit;
 }
 
 /**

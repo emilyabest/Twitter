@@ -51,10 +51,9 @@ static NSString * const consumerSecret = @"kxxGX0sQwWgmOkgGyaARLDGmtKi7S9OA48rOV
 /**
  Replace previous code to make an array of tweets instead of an array with tweetDictionaries.
  */
-- (void)getHomeTimelineWithCompletion:(void(^)(NSArray *tweets, NSError *error))completion {
-    
+- (void)getHomeTimelineWithParam:(NSDictionary *) parameter WithCompletion:(void(^)(NSArray *tweets, NSError *error))completion {
     [self GET:@"1.1/statuses/home_timeline.json"
-   parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSArray *  _Nullable tweetDictionaries) {
+   parameters:parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSArray *  _Nullable tweetDictionaries) {
        // Success
        NSMutableArray *tweets = [Tweet tweetsWithArray:tweetDictionaries];
        completion(tweets, nil);
@@ -62,25 +61,6 @@ static NSString * const consumerSecret = @"kxxGX0sQwWgmOkgGyaARLDGmtKi7S9OA48rOV
        // There was a problem
        completion(nil, error);
    }];
-       
-//       // Manually cache the tweets. If the request fails, restore from cache if possible.
-//       NSData *data = [NSKeyedArchiver archivedDataWithRootObject:tweetDictionaries];
-//       [[NSUserDefaults standardUserDefaults] setValue:data forKey:@"hometimeline_tweets"];
-//
-//       completion(tweetDictionaries, nil);
-//
-//   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//
-//       NSArray *tweetDictionaries = nil;
-//
-//       // Fetch tweets from cache if possible
-//       NSData *data = [[NSUserDefaults standardUserDefaults] valueForKey:@"hometimeline_tweets"];
-//       if (data != nil) {
-//           tweetDictionaries = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//       }
-//
-//       completion(tweetDictionaries, error);
-//   }];
 }
 
 /**

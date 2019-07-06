@@ -16,13 +16,14 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 
-@interface TimelineViewController () <UITableViewDelegate, UITableViewDataSource, ComposeViewControllerDelegate>
+@interface TimelineViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ComposeViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *tweets;
 
 // [1] View controller has a tableView as a subview
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (assign, nonatomic) BOOL isMoreDataLoading;
 
 @end
 
@@ -52,7 +53,7 @@
     // Get timeline
     // [4] Make an API request
     // [5] API manager calls the completion handler passing back data
-    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
+    [[APIManager shared] getHomeTimelineWithParam: nil WithCompletion:^(NSArray *tweets, NSError *error) {
         if (tweets) {
             // [6] View controller stores that data passed into the completion handler
 //            self.tweets = tweets;
@@ -116,6 +117,7 @@
 ;
     } else {
         [cell.favoritedButton setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
+        cell.favoritedCount.textColor = [UIColor colorWithRed:172/255.0 green:184/255.0 blue:194/255.0 alpha:1];
     }
     if (cell.tweet.retweeted) {
         [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
@@ -123,6 +125,7 @@
 ;
     } else {
         [cell.retweetButton setImage: [UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+        cell.retweetCount.textColor = [UIColor colorWithRed:172/255.0 green:184/255.0 blue:194/255.0 alpha:1];
     }
     
     // Fill profile image
@@ -153,6 +156,58 @@
     appDelegate.window.rootViewController = loginViewController;
     
     [[APIManager shared] logout];
+}
+
+/**
+ Used to implement infinite scroll.
+ */
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (!self.isMoreDataLoading) {
+        // Reset the flag
+//        self.isMoreDataLoading = YES;
+        
+        // Calculate the position of one  screen length before the bottom of the results
+        int scrollViewContentHeight = self.tableView.contentSize.height;
+        int scrollOffsetThreshold = scrollViewContentHeight - self.tableView.bounds.size.height;
+        
+        // When the user has scrolled past the threshold, start requesting
+        if(scrollView.contentOffset.y > scrollOffsetThreshold && self.tableView.isDragging) {
+            self.isMoreDataLoading = YES;
+            [self loadMoreData];
+        }
+    }
+}
+
+/**
+Helper method for scrollViewDidScroll. Gets more data to add cells to the bottom.
+ */
+- (void)loadMoreData {
+    // Parameter to pass in
+    Tweet *lastTweet = [self.tweets lastObject];
+
+    // Convert String id to NSNumber
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    f.numberStyle = NSNumberFormatterDecimalStyle;
+    NSNumber *numID = [f numberFromString:lastTweet.idStr];
+    
+    // Update to make id exclusive
+    long strToLong = [numID longValue];
+    long actualID = strToLong - 1;
+    NSNumber *maxID = @(actualID);
+
+    NSDictionary *parameter = @{@"max_id": maxID};
+    // Get timeline
+    [[APIManager shared] getHomeTimelineWithParam: (NSDictionary *) parameter WithCompletion:^(NSArray *tweets, NSError *error) {
+        if (error != nil) {
+        }
+        else{
+            self.isMoreDataLoading = NO;
+            [self.tweets addObjectsFromArray:tweets];
+            [self.tableView reloadData];
+        }
+        // Tell the refreshControl to stop spinning
+//        [self.refreshControl endRefreshing];
+    }];
 }
 
 @end

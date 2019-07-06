@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TimelineViewController : UIViewController
+@interface TimelineViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
 @end
